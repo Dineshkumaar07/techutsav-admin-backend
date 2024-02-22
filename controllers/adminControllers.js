@@ -1,4 +1,5 @@
 const Event = require("../models/Event");
+const User = require("../models/User");
 
 module.exports.createEvent_post = async (req, res) => {
   const { uniqueName } = req.body;
@@ -61,6 +62,16 @@ module.exports.remove_delete = (req, res) => {
     .then((result) => {
       console.log(result);
       res.status(200).json({ msg: "success" });
+    })
+    .catch((err) => {
+      res.status(400).json({ msg: "err" });
+    });
+};
+
+module.exports.getStudents_get = (req, res) => {
+  User.find({})
+    .then((result) => {
+      res.status(200).json(result);
     })
     .catch((err) => {
       res.status(400).json({ msg: "err" });
