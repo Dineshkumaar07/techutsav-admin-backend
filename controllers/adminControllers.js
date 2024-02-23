@@ -1,5 +1,6 @@
 const Event = require("../models/Event");
 const User = require("../models/User");
+const { BlobServiceClient } = require("@azure/storage-blob");
 
 module.exports.createEvent_post = async (req, res) => {
   const { uniqueName } = req.body;
@@ -77,3 +78,28 @@ module.exports.getStudents_get = (req, res) => {
       res.status(400).json({ msg: "err" });
     });
 };
+
+const connectionString = process.env.CONNECTIONSTRING;
+const containerName = process.env.CONTAINERNAME;
+
+const blobServiceClient =
+  BlobServiceClient.fromConnectionString(connectionString);
+const containerClient = blobServiceClient.getContainerClient(containerName);
+
+
+module.exports.uploadFile_post = async (req, res) => {
+  const {uniqueName} = req.body;
+  const file = req.file;
+
+  const blockBlobClient = containerClient.getBlockBlobClient(uniqueName);
+
+  try {
+    await blockBlobClient.upload(file.buffer, file.buffer.length).then(result => {
+      // console.log(result);
+      res.status(200).send({msg: "success"});
+    });
+  } catch (error) {
+    console.error("Error uploading file:", error.message);
+    res.status(400).send({msg: "Error"});
+  }
+}
