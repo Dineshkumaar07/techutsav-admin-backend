@@ -25,9 +25,9 @@ const event = new mongoose.Schema({
         type: String,
         default: ""
     },
-    imgURL: {
-        type: String,
-        default: ""
+    flagship: {
+        type: Boolean,
+        default: false
     }
 });
 
