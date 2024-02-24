@@ -28,6 +28,14 @@ const event = new mongoose.Schema({
     flagship: {
         type: Boolean,
         default: false
+    },
+    incharge: {
+        type: String,
+        default: ""
+    },
+    inchargeNumber: {
+        type: String,
+        default: ""
     }
 });
 
